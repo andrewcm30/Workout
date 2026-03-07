@@ -5,7 +5,6 @@ export default function RestTimer({ seconds, onComplete, onSkip }) {
   const intervalRef = useRef(null)
 
   useEffect(() => {
-    setRemaining(seconds)
     intervalRef.current = setInterval(() => {
       setRemaining((prev) => {
         if (prev <= 1) {

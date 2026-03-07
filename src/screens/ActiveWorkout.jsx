@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { getTemplate } from '../data/templates'
 import {
@@ -25,22 +25,14 @@ export default function ActiveWorkout() {
     return Date.now()
   })
   const [elapsed, setElapsed] = useState(0)
-  const [exerciseData, setExerciseData] = useState(() => initExerciseData())
-  const [restTimer, setRestTimer] = useState(null)
-  const [showFinish, setShowFinish] = useState(false)
-  const [summary, setSummary] = useState(null)
-  const [prs, setPrs] = useState([])
-  const [showConfetti, setShowConfetti] = useState(false)
-  const scrollRef = useRef(null)
-
-  function initExerciseData() {
+  const initExerciseData = () => {
     const active = getActiveWorkout()
     if (active && active.templateId === templateId) return active.exerciseData
 
     const lastWorkout = getLastWorkoutForTemplate(templateId)
     const data = {}
-    for (const block of template.blocks) {
-      for (const exercise of block.exercises) {
+    for (const templateBlock of template.blocks) {
+      for (const exercise of templateBlock.exercises) {
         const lastExercise = lastWorkout?.exercises.find((e) => e.exerciseId === exercise.id)
         const sets = []
         for (let i = 0; i < exercise.sets; i++) {
@@ -56,6 +48,13 @@ export default function ActiveWorkout() {
     }
     return data
   }
+  const [exerciseData, setExerciseData] = useState(() => initExerciseData())
+  const [restTimer, setRestTimer] = useState(null)
+  const [showFinish, setShowFinish] = useState(false)
+  const [summary, setSummary] = useState(null)
+  const [prs, setPrs] = useState([])
+  const [showConfetti, setShowConfetti] = useState(false)
+  const scrollRef = useRef(null)
 
   // Elapsed timer
   useEffect(() => {
@@ -315,7 +314,7 @@ export default function ActiveWorkout() {
   )
 }
 
-function ExerciseCard({ exercise, data, block, onUpdate, onComplete, hasPR }) {
+function ExerciseCard({ exercise, data, onUpdate, onComplete, hasPR }) {
   const isDuration = exercise.repType === 'duration'
   const repLabel = isDuration ? 'sec' : 'reps'
 
