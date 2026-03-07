@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
+  <rect width="192" height="192" rx="32" fill="#0a0a0a"/>
+  <g transform="translate(96,96)" stroke="#3b82f6" stroke-width="8" stroke-linecap="round" fill="none">
+    <!-- Barbell -->
+    <line x1="-60" y1="0" x2="60" y2="0"/>
+    <!-- Left plates -->
+    <rect x="-70" y="-25" width="16" height="50" rx="3" fill="#3b82f6"/>
+    <rect x="-82" y="-20" width="10" height="40" rx="3" fill="#3b82f6"/>
+    <!-- Right plates -->
+    <rect x="54" y="-25" width="16" height="50" rx="3" fill="#3b82f6"/>
+    <rect x="72" y="-20" width="10" height="40" rx="3" fill="#3b82f6"/>
+  </g>
+</svg>
