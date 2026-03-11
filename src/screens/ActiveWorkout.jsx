@@ -64,10 +64,27 @@ export default function ActiveWorkout() {
     return () => clearInterval(interval)
   }, [startTime])
 
-  // Auto-save
+  // Keep a ref to latest data so visibilitychange can access it
+  const exerciseDataRef = useRef(exerciseData)
+  useEffect(() => {
+    exerciseDataRef.current = exerciseData
+  }, [exerciseData])
+
+  // Auto-save on state change
   useEffect(() => {
     saveActiveWorkout({ templateId, startTime, exerciseData })
   }, [exerciseData, templateId, startTime])
+
+  // Save when app goes to background (covers mid-typing inputs)
+  useEffect(() => {
+    const handleVisChange = () => {
+      if (document.visibilityState === 'hidden') {
+        saveActiveWorkout({ templateId, startTime, exerciseData: exerciseDataRef.current })
+      }
+    }
+    document.addEventListener('visibilitychange', handleVisChange)
+    return () => document.removeEventListener('visibilitychange', handleVisChange)
+  }, [templateId, startTime])
 
   if (!template) {
     navigate('/')
@@ -349,6 +366,7 @@ function ExerciseCard({ exercise, data, onUpdate, onComplete, hasPR }) {
                 inputMode="decimal"
                 value={set.weight}
                 onChange={(e) => onUpdate(i, 'weight', e.target.value)}
+                onBlur={(e) => onUpdate(i, 'weight', e.target.value)}
                 disabled={set.completed}
                 placeholder={data.lastSets[i]?.weight?.toString() || ''}
                 className="w-full bg-[#252525] rounded-lg px-3 py-3 text-center text-base font-medium disabled:opacity-50 placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -364,6 +382,7 @@ function ExerciseCard({ exercise, data, onUpdate, onComplete, hasPR }) {
               inputMode="numeric"
               value={set.reps}
               onChange={(e) => onUpdate(i, 'reps', e.target.value)}
+              onBlur={(e) => onUpdate(i, 'reps', e.target.value)}
               disabled={set.completed}
               placeholder={data.lastSets[i]?.reps?.toString() || ''}
               className="w-full bg-[#252525] rounded-lg px-3 py-3 text-center text-base font-medium disabled:opacity-50 placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"

@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { workoutTemplates } from '../data/templates'
 import {
@@ -25,6 +26,13 @@ export default function HomeScreen() {
   const streak = getStreak()
   const nextIndex = getNextWorkoutIndex()
   const activeWorkout = getActiveWorkout()
+
+  // Auto-resume active workout when app relaunches
+  useEffect(() => {
+    if (activeWorkout) {
+      navigate(`/workout/${activeWorkout.templateId}`, { replace: true })
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleStart = (templateId) => {
     const idx = workoutTemplates.findIndex((t) => t.id === templateId)
