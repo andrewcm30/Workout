@@ -9,7 +9,7 @@ import WorkoutDetail from './screens/WorkoutDetail'
 
 function App() {
   return (
-    <div className="flex flex-col h-full bg-[#0a0a0a]">
+    <div className="flex flex-col h-full bg-[#050505]">
       <div className="flex-1 overflow-y-auto pb-20">
         <Routes>
           <Route path="/" element={<HomeScreen />} />

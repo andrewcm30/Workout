@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+@theme {
+  --color-brand: #f97316;
+  --color-brand-dim: #f97316/15;
+  --color-surface: #111111;
+  --color-surface-2: #191919;
+  --color-surface-3: #222222;
+  --color-border: #2a2a2a;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -9,9 +18,9 @@
 
 html, body, #root {
   height: 100%;
-  background-color: #0a0a0a;
-  color: #ffffff;
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background-color: #050505;
+  color: #f0f0f0;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 }
 
 input[type="number"] {
@@ -26,12 +35,63 @@ input[type="number"]::-webkit-outer-spin-button {
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 4px;
+  width: 3px;
 }
 ::-webkit-scrollbar-track {
-  background: #0a0a0a;
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
   background: #333;
   border-radius: 2px;
+}
+
+/* Glow pulse for PR */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 8px #f97316, 0 0 20px #f9731640; }
+  50% { box-shadow: 0 0 16px #f97316, 0 0 40px #f9731660; }
+}
+
+.glow-pulse {
+  animation: glow-pulse 1.5s ease-in-out infinite;
+}
+
+/* Shimmer for completed sets */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer-complete {
+  background: linear-gradient(90deg, #16a34a 0%, #22c55e 50%, #16a34a 100%);
+  background-size: 200% 100%;
+  animation: shimmer 2s ease-in-out;
+}
+
+/* Coach tip entrance */
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out forwards;
+}
+
+/* Confetti burst */
+@keyframes confetti-fall {
+  0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+.confetti-piece {
+  animation: confetti-fall 2s ease-in forwards;
+}
+
+/* Progress ring animation */
+@keyframes ring-fill {
+  from { stroke-dashoffset: 283; }
+}
+
+.ring-animate {
+  animation: ring-fill 0.6s ease-out forwards;
 }
