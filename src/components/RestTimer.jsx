@@ -3,6 +3,8 @@ import { useState, useEffect, useRef } from 'react'
 export default function RestTimer({ seconds, exerciseName, onComplete, onSkip }) {
   const [remaining, setRemaining] = useState(seconds)
   const intervalRef = useRef(null)
+  const onCompleteRef = useRef(onComplete)
+  useEffect(() => { onCompleteRef.current = onComplete }, [onComplete])
 
   useEffect(() => {
     intervalRef.current = setInterval(() => {
@@ -10,7 +12,7 @@ export default function RestTimer({ seconds, exerciseName, onComplete, onSkip })
         if (prev <= 1) {
           clearInterval(intervalRef.current)
           if (navigator.vibrate) navigator.vibrate([200, 100, 200])
-          onComplete()
+          onCompleteRef.current()
           return 0
         }
         return prev - 1
@@ -18,7 +20,7 @@ export default function RestTimer({ seconds, exerciseName, onComplete, onSkip })
     }, 1000)
 
     return () => clearInterval(intervalRef.current)
-  }, [seconds, onComplete])
+  }, [seconds])
 
   const mins = Math.floor(remaining / 60)
   const secs = remaining % 60
@@ -74,7 +76,7 @@ export default function RestTimer({ seconds, exerciseName, onComplete, onSkip })
                   if (p <= 1) {
                     clearInterval(intervalRef.current)
                     if (navigator.vibrate) navigator.vibrate([200, 100, 200])
-                    onComplete()
+                    onCompleteRef.current()
                     return 0
                   }
                   return p - 1
